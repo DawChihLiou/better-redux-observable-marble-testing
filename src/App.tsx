@@ -1,8 +1,16 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useDispatch } from 'react-redux';
+import { fetchUsers } from './store/actions';
 
 const App: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(fetchUsers());
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -10,14 +18,7 @@ const App: React.FC = () => {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={handleClick}>Get Github Users</button>
       </header>
     </div>
   );
