@@ -1,22 +1,10 @@
-import {
-  combineReducers,
-  createStore,
-  Store,
-  applyMiddleware,
-  Middleware,
-} from 'redux';
+import { createStore, Store, applyMiddleware, Middleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { createEpicMiddleware, combineEpics } from 'redux-observable';
+import { createEpicMiddleware } from 'redux-observable';
 
-import { githubUsersReducer } from './reducer';
-import { FetchGithubUsersActionTypes } from './types';
-import { fetchGithubUserEpic } from './epic';
-
-export const rootEpic = combineEpics(fetchGithubUserEpic);
-
-const rootReducer = combineReducers({
-  githubUsers: githubUsersReducer,
-});
+import { FetchGithubUsersActionTypes } from './githubUsers';
+import rootReducer from './rootReducer';
+import { rootEpic } from './rootEpic';
 
 const epicMiddleware = createEpicMiddleware();
 

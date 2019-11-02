@@ -21,6 +21,12 @@ export type FetchGithubUsersActionTypes =
   | FetchUsersSuccessfulAction
   | FetchUsersFailedAction;
 
+export interface GithubUsersState {
+  isLoading: boolean;
+  error: any;
+  data: GithubUserType[] | null;
+}
+
 export interface GithubUserType {
   login: string;
   id: number;
@@ -40,10 +46,4 @@ export interface GithubUserType {
   received_events_url: string;
   type: string;
   site_admin: boolean;
-}
-
-export interface GithubUsersState {
-  isLoading: boolean;
-  error: any;
-  data: GithubUserType[] | null;
 }

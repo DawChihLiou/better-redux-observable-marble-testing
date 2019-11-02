@@ -1,37 +1,37 @@
 import { Reducer } from 'redux';
 import {
-  GithubUsersState,
-  FetchGithubUsersActionTypes,
-  FETCH_USERS_REQUESTED,
-  FETCH_USERS_FAILED,
-  FETCH_USERS_SUCCESSFUL,
+  GithubReposState,
+  FetchGithubReposActionTypes,
+  FETCH_REPOS_REQUESTED,
+  FETCH_REPOS_FAILED,
+  FETCH_REPOS_SUCCESSFUL,
 } from './types';
 
-const initialState: GithubUsersState = {
+const initialState: GithubReposState = {
   isLoading: false,
   error: null,
   data: null,
 };
 
-export const githubUsersReducer: Reducer<
-  GithubUsersState,
-  FetchGithubUsersActionTypes
+export const githubReposReducer: Reducer<
+  GithubReposState,
+  FetchGithubReposActionTypes
 > = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_USERS_REQUESTED: {
+    case FETCH_REPOS_REQUESTED: {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case FETCH_USERS_FAILED: {
+    case FETCH_REPOS_FAILED: {
       return {
         ...state,
         isLoading: false,
         error: action.payload,
       };
     }
-    case FETCH_USERS_SUCCESSFUL: {
+    case FETCH_REPOS_SUCCESSFUL: {
       return {
         ...state,
         isLoading: false,
@@ -39,7 +39,8 @@ export const githubUsersReducer: Reducer<
         data: action.payload,
       };
     }
+    default: {
+      return state;
+    }
   }
-
-  return state;
 };
