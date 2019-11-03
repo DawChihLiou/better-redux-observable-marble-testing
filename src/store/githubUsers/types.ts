@@ -2,16 +2,16 @@ export const FETCH_USERS_REQUESTED = 'FETCH_USERS_REQUESTED';
 export const FETCH_USERS_SUCCESSFUL = 'FETCH_USERS_SUCCESSFUL';
 export const FETCH_USERS_FAILED = 'FETCH_USERS_FAILED';
 
-interface FetchUsersRequestedAction {
+export interface FetchUsersRequestedAction {
   type: typeof FETCH_USERS_REQUESTED;
 }
 
-interface FetchUsersSuccessfulAction {
+export interface FetchUsersSuccessfulAction {
   type: typeof FETCH_USERS_SUCCESSFUL;
   payload: GithubUserType[];
 }
 
-interface FetchUsersFailedAction {
+export interface FetchUsersFailedAction {
   type: typeof FETCH_USERS_FAILED;
   payload: any;
 }
