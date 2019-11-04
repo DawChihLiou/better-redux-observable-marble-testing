@@ -7,7 +7,7 @@ import {
   FETCH_REPOS_SUCCESSFUL,
 } from './types';
 
-const initialState: GithubReposState = {
+export const reposInitialState: GithubReposState = {
   isLoading: false,
   error: null,
   data: null,
@@ -16,7 +16,7 @@ const initialState: GithubReposState = {
 export const githubReposReducer: Reducer<
   GithubReposState,
   FetchGithubReposActionTypes
-> = (state = initialState, action) => {
+> = (state = reposInitialState, action) => {
   switch (action.type) {
     case FETCH_REPOS_REQUESTED: {
       return {

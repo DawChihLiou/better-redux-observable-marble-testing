@@ -7,7 +7,7 @@ import {
   FETCH_USERS_SUCCESSFUL,
 } from './types';
 
-const initialState: GithubUsersState = {
+export const usersInitialState: GithubUsersState = {
   isLoading: false,
   error: null,
   data: null,
@@ -16,7 +16,7 @@ const initialState: GithubUsersState = {
 export const githubUsersReducer: Reducer<
   GithubUsersState,
   FetchGithubUsersActionTypes
-> = (state = initialState, action) => {
+> = (state = usersInitialState, action) => {
   switch (action.type) {
     case FETCH_USERS_REQUESTED: {
       return {
