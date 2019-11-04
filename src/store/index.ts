@@ -5,8 +5,11 @@ import { createEpicMiddleware } from 'redux-observable';
 import { FetchGithubUsersActionTypes } from './githubUsers';
 import rootReducer from './rootReducer';
 import { rootEpic } from './rootEpic';
+import { ajax } from 'rxjs/ajax';
 
-const epicMiddleware = createEpicMiddleware();
+const epicMiddleware = createEpicMiddleware({
+  dependencies: { getJSON: ajax.getJSON },
+});
 
 export type AppState = ReturnType<typeof rootReducer>;
 

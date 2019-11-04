@@ -11,8 +11,8 @@ import { fetchUsersSuccessful, fetchUsersFailed } from './actions';
 import { AppState } from '..';
 import { AllActionTypes } from '../types';
 
-const fetchGithubUsers = () =>
-  ajax.getJSON<GithubUserType[]>('https://api.github.com/users').pipe(
+const fetchGithubUsers = (getJSON: (typeof ajax)['getJSON']) =>
+  getJSON<GithubUserType[]>('https://api.github.com/users').pipe(
     map(fetchUsersSuccessful),
     catchError(error => of(fetchUsersFailed(error)))
   );
@@ -21,8 +21,8 @@ export const fetchGithubUserEpic: Epic<
   AllActionTypes,
   FetchGithubUsersActionTypes,
   AppState
-> = action$ =>
+> = (action$, state$, { getJSON }) =>
   action$.pipe(
     ofType(FETCH_USERS_REQUESTED),
-    switchMap(fetchGithubUsers)
+    switchMap(action => fetchGithubUsers(getJSON))
   );

@@ -16,26 +16,28 @@ import { ajax } from 'rxjs/ajax';
 import { fetchReposSuccessful, fetchReposFailed, fetchRepos } from './actions';
 import { UPDATE_SELECTED_USER } from '../selectedUser';
 import { AppState } from '..';
-
 import { AllActionTypes } from '../types';
 
-const fetchGithubRepos = (username: string) =>
-  ajax
-    .getJSON<GithubRepoType[]>(`https://api.github.com/users/${username}/repos`)
-    .pipe(
-      map(fetchReposSuccessful),
-      catchError(error => of(fetchReposFailed(error)))
-    );
+export const fetchGithubRepos = (
+  username: string,
+  getJSON: (typeof ajax)['getJSON']
+) =>
+  getJSON<GithubRepoType[]>(
+    `https://api.github.com/users/${username}/repos`
+  ).pipe(
+    map(fetchReposSuccessful),
+    catchError(error => of(fetchReposFailed(error)))
+  );
 
 export const fetchGithubReposEpic: Epic<
   FetchGithubReposActionTypes,
   FetchGithubReposActionTypes,
   AppState
-> = action$ =>
+> = (action$, state$, { getJSON }) =>
   action$.pipe(
     ofType(FETCH_REPOS_REQUESTED),
     pluck('payload'),
-    switchMap(fetchGithubRepos)
+    switchMap(payload => fetchGithubRepos(payload, getJSON))
   );
 
 export const listenToSelectedUserEpic: Epic<
