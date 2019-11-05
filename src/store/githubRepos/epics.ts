@@ -1,4 +1,4 @@
-import { Epic, ofType } from 'redux-observable';
+import { Epic, ofType, combineEpics } from 'redux-observable';
 import {
   map,
   catchError,
@@ -14,9 +14,11 @@ import {
 import { of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { fetchReposSuccessful, fetchReposFailed, fetchRepos } from './actions';
-import { UPDATE_SELECTED_USER } from '../selectedUser';
+import {
+  UPDATE_SELECTED_USER,
+  UpdateSelectedUserAction,
+} from '../selectedUser';
 import { AppState } from '..';
-import { AllActionTypes } from '../types';
 
 export const fetchGithubRepos = (
   username: string,
@@ -41,7 +43,7 @@ export const fetchGithubReposEpic: Epic<
   );
 
 export const listenToSelectedUserEpic: Epic<
-  AllActionTypes,
+  UpdateSelectedUserAction | FetchGithubReposActionTypes,
   FetchGithubReposActionTypes,
   AppState
 > = (action$, state$) =>
@@ -51,3 +53,8 @@ export const listenToSelectedUserEpic: Epic<
     map(([action, state]) => state.selectedUser),
     map(username => fetchRepos(username))
   );
+
+export const githubReposEpics = combineEpics(
+  fetchGithubReposEpic,
+  listenToSelectedUserEpic
+);

@@ -8,15 +8,16 @@ import {
 import { updateSelectedUser } from './actions';
 import { UpdateSelectedUserAction } from './types';
 import { AppState } from '..';
-import { AllActionTypes } from '../types';
+
+type InputActions = FetchGithubUsersActionTypes | UpdateSelectedUserAction;
 
 export const updateSelectedUserEpic: Epic<
-  AllActionTypes,
+  InputActions,
   UpdateSelectedUserAction,
   AppState
 > = action$ =>
   action$.pipe(
-    ofType<AllActionTypes, FetchGithubUsersActionTypes>(FETCH_USERS_SUCCESSFUL),
+    ofType<InputActions, FetchGithubUsersActionTypes>(FETCH_USERS_SUCCESSFUL),
     pluck<FetchGithubUsersActionTypes, GithubUserType[]>('payload'),
     map(users => users[0].login),
     map(updateSelectedUser)

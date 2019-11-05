@@ -6,7 +6,7 @@ import {
   fetchGithubRepos,
   fetchGithubReposEpic,
   listenToSelectedUserEpic,
-} from './epic';
+} from './epics';
 import { mergeMap } from 'rxjs/operators';
 import { updateSelectedUser } from '../selectedUser';
 import { StateObservable } from 'redux-observable';
