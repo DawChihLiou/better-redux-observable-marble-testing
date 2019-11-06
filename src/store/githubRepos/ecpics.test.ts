@@ -181,7 +181,7 @@ describe('listenToSelectedUserEpic', () => {
 
     scheduler.run(({ hot, cold, expectObservable }) => {
       const action$ = hot(marbles.i, values) as any;
-      const state$ = new StateObservable(new Subject<AppState>(), {
+      const state$ = new StateObservable<AppState>(new Subject(), {
         selectedUser: 'user-in-state',
         githubRepos: reposInitialState,
         githubUsers: usersInitialState,
