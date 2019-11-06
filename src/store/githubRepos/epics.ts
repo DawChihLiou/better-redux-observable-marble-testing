@@ -20,6 +20,21 @@ import {
 } from '../selectedUser';
 import { AppState } from '..';
 
+/**
+ * Takes github username and RxJS ajax.getJSON as parameters to fetch given
+ * user's public repos and dispatch Redux actions according to whether the
+ * API request was successful.
+ *
+ * You can find `GithubRepoType` here:
+ * https://github.com/DawChihLiou/better-redux-observable-marble-testing/blob/master/src/store/githubRepos/types.ts#L31
+ *
+ * For more info about Github's public REST API, please check out
+ * https://developer.github.com/v3/repos/#list-user-repositories
+ *
+ * @param username {string}
+ * @param getJSON  {function}
+ * @returns {Observable}
+ */
 export const fetchGithubRepos = (
   username: string,
   getJSON: (typeof ajax)['getJSON']
@@ -31,6 +46,17 @@ export const fetchGithubRepos = (
     catchError(error => of(fetchReposFailed(error)))
   );
 
+/**
+ * Listens to fetch github repos request action and execute fetch.
+ *
+ * You can find `FetchGithubReposActionTypes` here:
+ * https://github.com/DawChihLiou/better-redux-observable-marble-testing/blob/master/src/store/githubRepos/types.ts#L20
+ *
+ * @param action$ {ActionsObservable}
+ * @param state$ {StateObservable}
+ * @param dependencies {Object}
+ * @returns {Observable}
+ */
 export const fetchGithubReposEpic: Epic<
   FetchGithubReposActionTypes,
   FetchGithubReposActionTypes,
@@ -38,10 +64,23 @@ export const fetchGithubReposEpic: Epic<
 > = (action$, state$, { getJSON }) =>
   action$.pipe(
     ofType(FETCH_REPOS_REQUESTED),
-    pluck('payload'),
+    pluck<FetchGithubReposActionTypes, string>('payload'),
     switchMap(payload => fetchGithubRepos(payload, getJSON))
   );
 
+/**
+ * Listens to fetch update selected user action. Combining with the newly
+ * updated selected user in the store, we dispatch fetch repos action to
+ * trigger fetch.
+ *
+ * You can find action types here:
+ * https://github.com/DawChihLiou/better-redux-observable-marble-testing/blob/master/src/store/githubRepos/types.ts
+ *
+ * @param action$ {ActionsObservable}
+ * @param state$ {StateObservable}
+ * @param dependencies {Object}
+ * @returns {Observable}
+ */
 export const listenToSelectedUserEpic: Epic<
   UpdateSelectedUserAction | FetchGithubReposActionTypes,
   FetchGithubReposActionTypes,
