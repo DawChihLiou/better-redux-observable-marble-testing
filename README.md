@@ -2,7 +2,7 @@
 
 An example to demonstrate how to write better marble tests with Typescript for Redux Observable.
 
-You can find the explanation and thinking behind the tests and typing in [this artical](https://medium.com/@dawchihliou/better-marble-test-70c7676a1e2). 
+You can find the explanation and thinking behind the tests and typing in [this article](https://medium.com/@dawchihliou/better-marble-test-70c7676a1e2). 
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
