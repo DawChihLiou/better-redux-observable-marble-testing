@@ -78,8 +78,8 @@ describe('fetchGithubReposEpic', () => {
       o: fetchReposSuccessful(response),
     };
 
-    scheduler.run(({ cold, expectObservable }) => {
-      const action$ = cold(marbles.i, values) as any;
+    scheduler.run(({ hot, cold, expectObservable }) => {
+      const action$ = hot(marbles.i, values) as any;
       const state$ = null as any;
       const dependencies = {
         getJSON: (url: string) => cold(marbles.r, values),
@@ -92,11 +92,11 @@ describe('fetchGithubReposEpic', () => {
   it('should cancel fetching properly and only emit output action once the previous fetch has fulfilled', () => {
     const scheduler = new TestScheduler(deepEqual);
     const marbles = {
-      r: '--(r|)', // mock api response
-      i: '-ii--(i|)', // input action
+      r: '--r', // mock api response
+      i: '-ii--i', // input action
       // == switchMap() ==
-      // '----r--(r|)'
-      o: '----o--(o|)', // output action
+      // '----r--r'
+      o: '----o--o', // output action
     };
     const values = {
       i: fetchRepos('octocat'),
@@ -104,8 +104,8 @@ describe('fetchGithubReposEpic', () => {
       o: fetchReposSuccessful(response),
     };
 
-    scheduler.run(({ cold, expectObservable }) => {
-      const action$ = cold(marbles.i, values) as any;
+    scheduler.run(({ hot, cold, expectObservable }) => {
+      const action$ = hot(marbles.i, values) as any;
       const state$ = null as any;
       const dependencies = {
         getJSON: (url: string) => cold(marbles.r, values),
@@ -118,17 +118,17 @@ describe('fetchGithubReposEpic', () => {
   it('should signal fetching repos has failed', () => {
     const scheduler = new TestScheduler(deepEqual);
     const marbles = {
-      i: '-(i|)', // input action
+      i: '-i', // input action
       d: '--|', // mock api response time duration
-      o: '---(o|)', // output action
+      o: '---o', // output action
     };
     const values = {
       i: fetchRepos('octocat'),
       o: fetchReposFailed(error),
     };
 
-    scheduler.run(({ cold, expectObservable }) => {
-      const action$ = cold(marbles.i, values) as any;
+    scheduler.run(({ hot, cold, expectObservable }) => {
+      const action$ = hot(marbles.i, values) as any;
       const state$ = null as any;
       const duration = scheduler.createTime(marbles.d);
       const dependencies = {
@@ -144,16 +144,16 @@ describe('fetchGithubReposEpic', () => {
     const scheduler = new TestScheduler(deepEqual);
     const marbles = {
       d: '--|', // mock api response time duration
-      i: '-ii--(i|)', // input action
-      o: '----o--(o|)', // output action
+      i: '-ii--i', // input action
+      o: '----o--o', // output action
     };
     const values = {
       i: fetchRepos('octocat'),
       o: fetchReposFailed(error),
     };
 
-    scheduler.run(({ cold, expectObservable }) => {
-      const action$ = cold(marbles.i, values) as any;
+    scheduler.run(({ hot, cold, expectObservable }) => {
+      const action$ = hot(marbles.i, values) as any;
       const state$ = null as any;
       const duration = scheduler.createTime(marbles.d);
       const dependencies = {
@@ -168,8 +168,8 @@ describe('fetchGithubReposEpic', () => {
 
 describe('listenToSelectedUserEpic', () => {
   const marbles = {
-    i: '-i--(i|)', // input action
-    o: '-o--(o|)', // output action
+    i: '-i--i', // input action
+    o: '-o--o', // output action
   };
   const values = {
     i: updateSelectedUser(''),
@@ -179,8 +179,8 @@ describe('listenToSelectedUserEpic', () => {
   it('should listen to UPDATE_SELECTED_USER action and signal fetching repos successfully', () => {
     const scheduler = new TestScheduler(deepEqual);
 
-    scheduler.run(({ cold, expectObservable }) => {
-      const action$ = cold(marbles.i, values) as any;
+    scheduler.run(({ hot, cold, expectObservable }) => {
+      const action$ = hot(marbles.i, values) as any;
       const state$ = new StateObservable(new Subject<AppState>(), {
         selectedUser: 'user-in-state',
         githubRepos: reposInitialState,
